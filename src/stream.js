@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import io from 'socket.io-client';
 
-const Stream = () => {
+const Stream = (props) => {
     useEffect(() => {
         let webcamElement = document.getElementById('webcam');
         let canvasElement = document.getElementById('canvas');
@@ -33,12 +33,14 @@ const Stream = () => {
                 interval = setInterval(() => {
                     context.drawImage(webcamElement, 0, 0, context.width, context.height);
                     socket.emit('stream', canvasElement.toDataURL('image/webp'));
-                }, 1000/10);
+                }, 1000/60);
             } else {
                 clearInterval(interval);
-                webcamElement.srcObject.getTracks().forEach(track => {
-                    track.stop();
-                });
+                if(webcamElement.srcObject) {
+                    webcamElement.srcObject.getTracks().forEach(track => {
+                        track.stop();
+                    });
+                }
             }
             streaming = !streaming;
         });
