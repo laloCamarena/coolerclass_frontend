@@ -61,17 +61,19 @@ const Login = () => {
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control onChange = {handleChange} type="email" placeholder="email@example.com"/>
+                    <Form.Control onChange = {handleChange} type="email" name="email" placeholder="email@example.com"/>
                 </Form.Group>
                 <br/>
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control onChange = {handleChange} type="password" placeholder="Password" />
+                    <Form.Control onChange = {handleChange} type="password" name="password" placeholder="Password" />
                 </Form.Group>
+                <Card.Link style={{margin:"80px"}} href="/register">Register</Card.Link>
+                <Button style={{margin:"70px"}} variant="primary" type="submit">Submit</Button>
             </Form>
             <br/><br/><br/>
-            <Card.Link style={{margin:"80px"}} href="/register">Register</Card.Link>
-            <Button style={{margin:"70px"}} variant="primary" type="submit">Submit</Button>
+            
+            
         </Card.Body>
         
         {/*
