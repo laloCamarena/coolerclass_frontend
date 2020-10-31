@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 // Local
 import Logo from './Logo.png'
@@ -27,41 +28,16 @@ const Register = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const xhr = new XMLHttpRequest();
-        if(formData.password === formData.confirmPassword) {
-            let urlEncodedData = "";
-            let dataPairs = [];
-            let name;
-            for(name in formData) {
-                if(name !== 'confirmPassword') {
-                    dataPairs.push(encodeURIComponent(name) + "=" + encodeURIComponent(formData[name]));
-                }
-            }
-            urlEncodedData = dataPairs.join("&").replace(/%20/g, "+");
-
-            // successful data submission
-            xhr.addEventListener("load", (event) => {
-                if(parseInt(xhr.response) === 204) {
-                    alert("The email submitted is already in use");
-                } else {
-                    history.push("/login");
-                }
-            })
-
-            xhr.addEventListener('error', (event) => {
-                alert('Something went wrong');
-            })
-
-            xhr.open('POST', "http://localhost:5000/register");
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send(urlEncodedData);
-        }
+        await axios.post('http://localhost:5000/register', {
+            ...formData
+        })
+        .then(history.push('/login'))
+        .catch(console.log);
     };
 
     return (
-
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
         <Card border='secondary' style={{ width: '30rem',height:'35rem'}} className="text-center">
         <Card.Header><a href="/"><img alt="Logo" src= {Logo} width="30%"/></a></Card.Header>
@@ -83,11 +59,11 @@ const Register = () => {
                 <Row>
                     <Col>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control name="Password" onChange = {handleChange} type="password" placeholder="Password"></Form.Control>
+                        <Form.Control name="password" onChange = {handleChange} type="password" placeholder="Password"></Form.Control>
                     </Col>
                     <Col>
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control name="confirmPassword"onChange = {handleChange} type="password" placeholder="Confirm"></Form.Control>
+                        <Form.Control name="confirmPassword" onChange = {handleChange} type="password" placeholder="Confirm"></Form.Control>
                     </Col>
                 </Row>
                 <Card.Link style={{margin:"80px"}} href="/login">Login</Card.Link>

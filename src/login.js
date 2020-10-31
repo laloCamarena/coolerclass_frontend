@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import axios from 'axios';
 import {useHistory} from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -15,41 +16,24 @@ const Login = () => {
     const [loginData, updateLoginData] = useState(initialLoginData);
 
     const handleChange = (e) => {
+        console.log(e.target.value);
         updateLoginData({
             ...loginData,
             [e.target.name]: e.target.value.trim()
         });
     };
 
-    const handleSubmit = (e) => {
+    const onSuccess = ({data}) => {
+        history.push('/dashboard');
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const xhr = new XMLHttpRequest();
-        if(loginData.password === loginData.confirmPassword) {
-            let urlEncodedData = "";
-            let dataPairs = [];
-            let name;
-            for(name in loginData) {
-                dataPairs.push(encodeURIComponent(name) + "=" + encodeURIComponent(loginData[name]));
-            }
-            urlEncodedData = dataPairs.join("&").replace(/%20/g, "+");
-
-            // successful data submission
-            xhr.addEventListener("load", (event) => {
-                if(parseInt(xhr.response) === 204) {
-                    alert("Email or password are incorrect");
-                } else {
-                    history.push("/login");
-                }
-            })
-
-            xhr.addEventListener('error', (event) => {
-                alert('Something went wrong');
-            })
-
-            xhr.open('POST', "http://localhost:5000/register");
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send(urlEncodedData);
-        }
+        await axios.post('http://localhost:5000/login', {
+            ...loginData
+        })
+        .then(onSuccess)
+        .catch(console.log);
     };
 
     return (
@@ -72,8 +56,6 @@ const Login = () => {
                 <Button style={{margin:"70px"}} variant="primary" type="submit">Submit</Button>
             </Form>
             <br/><br/><br/>
-            
-            
         </Card.Body>
         
         {/*
