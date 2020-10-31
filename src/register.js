@@ -28,7 +28,6 @@ const Register = () => {
     };
 
     const handleSubmit = (e) => {
-        alert('a')
         e.preventDefault();
         const xhr = new XMLHttpRequest();
         if(formData.password === formData.confirmPassword) {
@@ -95,8 +94,6 @@ const Register = () => {
                 <Button style={{margin:"70px"}} variant="primary" type="submit">Submit</Button>
             </Form>
             <br/><br/>
-            
-            
         </Card.Body>
         
         {/* 

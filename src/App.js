@@ -15,6 +15,7 @@ import Register from './register';
 import Login from "./login";
 import Stream from "./stream";
 import WatchStream from './watchStream';
+import Dashboard from './dashboard';
 import LogoSmall from './LogoSmall.png'
 import Teacher from './online-teacher.jpg'
 
@@ -29,18 +30,6 @@ function getLink()
 const App = () => {
     return (
         <div>
-            {getLink() !== "login" &&
-            <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
-            <Navbar.Toggle />
-                <Navbar.Collapse className="justify-content-end">
-                {getLink() !== "" && <Nav.Link href="\">Inicio</Nav.Link>}
-                <Nav.Link href="\login">Login</Nav.Link>
-                 
-                {getLink() !== "register" && <Nav.Link href="\register">Register</Nav.Link>}
-                </Navbar.Collapse>
-            </Navbar>
-            }
             <BrowserRouter>
             {/* <NavBar /> */}
             <main>
@@ -49,10 +38,20 @@ const App = () => {
                     <Route path="/register" component={Register} />
                     <Route path="/stream" component={Stream} />
                     <Route path="/watch-stream" component={WatchStream} />
+                    <Route path="/dashboard" component={Dashboard} />
                 </Switch>
             </main>
             {getLink() === "" &&
                 <div>
+                    <Navbar bg="dark" variant="dark">
+                        <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                        <Navbar.Toggle />
+                        <Navbar.Collapse className="justify-content-end">
+                        {getLink() !== "" && <Nav.Link href="\">Inicio</Nav.Link>}
+                        <Nav.Link href="\login">Login</Nav.Link>
+                        {getLink() !== "register" && <Nav.Link href="\register">Register</Nav.Link>}
+                        </Navbar.Collapse>
+                    </Navbar>
                     <Row className="justify-content-md-center">
                         <Col xs={8} sm={6} md={6}>
                             <h1 style={{textAlign:"center"}}>A package to make your school classes better</h1>
