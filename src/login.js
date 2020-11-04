@@ -65,7 +65,7 @@ const Login = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control onChange = {handleChange} type="password" name="password" placeholder="Password" />
                 </Form.Group>
-                { user!=="" ? <a style={{color: "red"}}>{user}<br/></a> : null }
+                { user!=="" ? <p style={{color: "red"}}>{user}<br/></p> : null }
                 <Card.Link style={{margin:"80px"}} href="/register">Register</Card.Link>
                 <Button style={{margin:"70px"}} variant="primary" type="submit">Submit</Button>
             </Form>

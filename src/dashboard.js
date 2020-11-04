@@ -23,7 +23,7 @@ import a3 from './3.jpg';
 import LogoSmall from './LogoSmall.png';
 
 const Dashboard = (props) => {
-    console.log(typeof(props.location.state))
+    const userInfo = props.location.state
     const history = useHistory();
     if(typeof(props.location.state.first_name)==='undefined')
     {
