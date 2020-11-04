@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Logo from './Logo.png'
 const Login = () => {
     const history = useHistory();
+    const [user,setUser] = useState("")
     const initialLoginData = Object.freeze({
         email: "",
         password: "",
@@ -16,6 +17,7 @@ const Login = () => {
     const [loginData, updateLoginData] = useState(initialLoginData);
 
     const handleChange = (e) => {
+        setUser("")
         console.log(e.target.value);
         updateLoginData({
             ...loginData,
@@ -24,7 +26,18 @@ const Login = () => {
     };
 
     const onSuccess = ({data}) => {
-        history.push('/dashboard');
+       if(data !== 204)
+       {
+        history.push({
+            pathname: '/dashboard',
+            state: data
+        });
+       }
+       else
+       {
+           setUser("Usuario inexistente o incorrecto")
+       }
+        
     }
 
     const handleSubmit = async (e) => {
@@ -52,6 +65,7 @@ const Login = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control onChange = {handleChange} type="password" name="password" placeholder="Password" />
                 </Form.Group>
+                { user!=="" ? <a style={{color: "red"}}>{user}<br/></a> : null }
                 <Card.Link style={{margin:"80px"}} href="/register">Register</Card.Link>
                 <Button style={{margin:"70px"}} variant="primary" type="submit">Submit</Button>
             </Form>

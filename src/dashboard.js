@@ -11,18 +11,24 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { Link } from 'react-router-dom'
-
+import Grid from '@material-ui/core/Grid';
+import {useHistory} from "react-router-dom";
 // local packages
-import Paimon from './asd.png';
-import LogoSmall from './LogoSmall.png'
+import a1 from './1.jpg';
+import a2 from './2.jpg';
+import a3 from './3.jpg';
+import LogoSmall from './LogoSmall.png';
 
-
-const Dashboard = () => {
+const Dashboard = (props) => {
+    console.log(typeof(props.location.state))
+    const history = useHistory();
+    if(typeof(props.location.state.first_name)==='undefined')
+    {
+        history.push('/login');
+    }
     const classes = useStyles();
     return (
         <div>
@@ -33,193 +39,84 @@ const Dashboard = () => {
                 <Nav.Link href="\register">Logout</Nav.Link>
                 </Navbar.Collapse>
             </Navbar>
-            
-            <Row>
-                <Col>
-                    <Link to ="/login">
+            <Grid container spacing={5} style={{ padding: 20 }}>
+                <Row>
+                    <Col>
                         <Card className={classes.root}>
                             <CardActionArea>
                                 <CardMedia
                                 component="img"
                                 alt="Contemplative Reptile"
                                 height="140"
-                                image={Paimon}
+                                image={a1}
                                 title="Contemplative Reptile"
                                 />
                                 <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Paimon
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    I, I wanna fucking die
-                                </Typography>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                    Metodos Matematicos 1
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        Enrique Eduardo Gomez Arias
+                                    </Typography>
                                 </CardContent>
                             </CardActionArea>
                             <CardActions className={classes.root}>
-                                <Button size="small" color="primary">
-                                Hell yea
-                                </Button>
-                                <Button size="small" color="primary">
-                                Learn More
-                                </Button>
                             </CardActions>
                         </Card>
-                    </Link>
-                </Col>
-                <Col>
-                    <Card className={classes.root}>
-                        <CardActionArea>
-                            <CardMedia
-                            component="img"
-                            alt="Contemplative Reptile"
-                            height="140"
-                            image={Paimon}
-                            title="Contemplative Reptile"
-                            />
-                            <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Seld Help
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                It's not a meme
-                            </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions className={classes.root}>
-                            <Button size="small" color="primary">
-                            Free me 
-                            </Button>
-                            <Button size="small" color="primary">
-                            Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className={classes.root}>
-                        <CardActionArea>
-                            <CardMedia
-                            component="img"
-                            alt="Contemplative Reptile"
-                            height="140"
-                            image={Paimon}
-                            title="Contemplative Reptile"
-                            />
-                            <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Paimon
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                I, I wanna fucking die
-                            </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions className={classes.root}>
-                            <Button size="small" color="primary">
-                            Hell yea
-                            </Button>
-                            <Button size="small" color="primary">
-                            Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Link to ="/login">
+                    </Col>
+                    <Col>
                         <Card className={classes.root}>
                             <CardActionArea>
                                 <CardMedia
                                 component="img"
                                 alt="Contemplative Reptile"
                                 height="140"
-                                image={Paimon}
+                                image={a3}
                                 title="Contemplative Reptile"
                                 />
                                 <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Paimon
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    I, I wanna fucking die
-                                </Typography>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                    Programación 1
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        Arturo Emanuel Quezada Ruvalcaba
+                                    </Typography>
                                 </CardContent>
                             </CardActionArea>
                             <CardActions className={classes.root}>
-                                <Button size="small" color="primary">
-                                Hell yea
-                                </Button>
-                                <Button size="small" color="primary">
-                                Learn More
-                                </Button>
                             </CardActions>
                         </Card>
-                    </Link>
-                </Col>
-                <Col>
-                    <Card className={classes.root}>
-                        <CardActionArea>
-                            <CardMedia
-                            component="img"
-                            alt="Contemplative Reptile"
-                            height="140"
-                            image={Paimon}
-                            title="Contemplative Reptile"
-                            />
-                            <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Seld Help
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                It's not a meme
-                            </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions className={classes.root}>
-                            <Button size="small" color="primary">
-                            Free me 
-                            </Button>
-                            <Button size="small" color="primary">
-                            Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Col>
-                <Col>
-                    <Card className={classes.root}>
-                        <CardActionArea>
-                            <CardMedia
-                            component="img"
-                            alt="Contemplative Reptile"
-                            height="140"
-                            image={Paimon}
-                            title="Contemplative Reptile"
-                            />
-                            <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Paimon
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                I, I wanna fucking die
-                            </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions className={classes.root}>
-                            <Button size="small" color="primary">
-                            Hell yea
-                            </Button>
-                            <Button size="small" color="primary">
-                            Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Col>
-            </Row>
+                    </Col>
+                    <Col>
+                        <Card className={classes.root}>
+                            <CardActionArea>
+                                <CardMedia
+                                component="img"
+                                alt="Contemplative Reptile"
+                                height="140"
+                                image={a2}
+                                title="Contemplative Reptile"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                    Historia de la computación
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        Jose Manuel Martinez Gonzalez
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                            <CardActions className={classes.root}>
+                            </CardActions>
+                        </Card>
+                    </Col>
+                </Row>
+            </Grid>
             
         </div>
         
     );
+   
 };
 
 const useStyles = makeStyles({
