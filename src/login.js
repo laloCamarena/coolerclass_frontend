@@ -26,7 +26,7 @@ const Login = () => {
     };
 
     const onSuccess = ({data}) => {
-       if(data !== 204)
+       if(data !== "")
        {
         history.push({
             pathname: '/dashboard',

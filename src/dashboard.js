@@ -1,6 +1,6 @@
 // npm packages
-import React from 'react';
-
+import React, {useState,useEffect} from 'react';
+import useAxios from 'axios-hooks'
 //ReactBS
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -22,14 +22,42 @@ import a2 from './2.jpg';
 import a3 from './3.jpg';
 import LogoSmall from './LogoSmall.png';
 
+function getclasses () {
+
+}
 const Dashboard = (props) => {
-    const userInfo = props.location.state
     const history = useHistory();
-    if(typeof(props.location.state.first_name)==='undefined')
+    if(props.location.state === undefined)
     {
         history.push('/login');
+        window.location.reload();
     }
+    const imgs = [a1,a2,a3];
+    const userInfo = props.location.state;
+    const [userID,setUserID] =useState(userInfo.id);
     const classes = useStyles();
+    const [{ data, loading, error }, refetch] = useAxios(
+        'http://127.0.0.1:5000/user/'+userID+'/classes'
+    )
+    if (loading) return(
+        <div>
+            <Navbar bg="dark" variant="dark">
+                <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                <Navbar.Toggle />
+                <Navbar.Collapse className="justify-content-end">
+                <Nav.Link href="\register">Logout</Nav.Link>
+                </Navbar.Collapse>
+            </Navbar>
+            <Grid container spacing={5} style={{ padding: 20 }}>
+                <Row>
+                </Row>
+            </Grid>
+            
+        </div>
+    )
+    if (error) {
+        history.push('/login');
+    }
     return (
         <div>
             <Navbar bg="dark" variant="dark">
@@ -41,42 +69,18 @@ const Dashboard = (props) => {
             </Navbar>
             <Grid container spacing={5} style={{ padding: 20 }}>
                 <Row>
-                    <Col>
+                    {data.map((clase) =>
+                        <Col>
                         <Card className={classes.root}>
                             <CardActionArea>
                                 <CardMedia
                                 component="img"
-                                alt="Contemplative Reptile"
                                 height="140"
-                                image={a1}
-                                title="Contemplative Reptile"
+                                image={imgs[Math.floor(Math.random() * imgs.length)]}
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                    Metodos Matematicos 1
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        Enrique Eduardo Gomez Arias
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                            <CardActions className={classes.root}>
-                            </CardActions>
-                        </Card>
-                    </Col>
-                    <Col>
-                        <Card className={classes.root}>
-                            <CardActionArea>
-                                <CardMedia
-                                component="img"
-                                alt="Contemplative Reptile"
-                                height="140"
-                                image={a3}
-                                title="Contemplative Reptile"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                    Programación 1
+                                    {clase.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary" component="p">
                                         Arturo Emanuel Quezada Ruvalcaba
@@ -87,29 +91,8 @@ const Dashboard = (props) => {
                             </CardActions>
                         </Card>
                     </Col>
-                    <Col>
-                        <Card className={classes.root}>
-                            <CardActionArea>
-                                <CardMedia
-                                component="img"
-                                alt="Contemplative Reptile"
-                                height="140"
-                                image={a2}
-                                title="Contemplative Reptile"
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">
-                                    Historia de la computación
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        Jose Manuel Martinez Gonzalez
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
-                            <CardActions className={classes.root}>
-                            </CardActions>
-                        </Card>
-                    </Col>
+                    )}
+                    
                 </Row>
             </Grid>
             
