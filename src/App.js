@@ -16,6 +16,7 @@ import Login from "./login";
 import Stream from "./stream";
 import WatchStream from './watchStream';
 import Dashboard from './dashboard';
+import Assignment from './assignment';
 import LogoSmall from './LogoSmall.png'
 import Teacher from './online-teacher.jpg'
 
@@ -39,6 +40,7 @@ const App = () => {
                     <Route path="/stream" component={Stream} />
                     <Route path="/watch-stream" component={WatchStream} />
                     <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/assignment/:id" component={Assignment}/>
                 </Switch>
             </main>
             {getLink() === "" &&

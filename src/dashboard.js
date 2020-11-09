@@ -1,5 +1,5 @@
 // npm packages
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import useAxios from 'axios-hooks'
 //ReactBS
 import Navbar from 'react-bootstrap/Navbar';
@@ -22,9 +22,6 @@ import a2 from './2.jpg';
 import a3 from './3.jpg';
 import LogoSmall from './LogoSmall.png';
 
-function getclasses () {
-
-}
 const Dashboard = (props) => {
     const history = useHistory();
     if(props.location.state === undefined)
@@ -34,6 +31,7 @@ const Dashboard = (props) => {
     }
     const imgs = [a1,a2,a3];
     const userInfo = props.location.state;
+    console.log(userInfo)
     const [userID,setUserID] =useState(userInfo.id);
     const classes = useStyles();
     const [{ data, loading, error }, refetch] = useAxios(
@@ -64,7 +62,7 @@ const Dashboard = (props) => {
                 <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                <Nav.Link href="\register">Logout</Nav.Link>
+                <Nav.Link href="\login">Logout</Nav.Link>
                 </Navbar.Collapse>
             </Navbar>
             <Grid container spacing={5} style={{ padding: 20 }}>
