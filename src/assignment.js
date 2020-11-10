@@ -1,6 +1,5 @@
 // npm packages
 import React from 'react';
-import useAxios from 'axios-hooks'
 //ReactBS
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -17,13 +16,19 @@ import Row from 'react-bootstrap/Row';
 // local packages
 import LogoSmall from './LogoSmall.png';
 
+import {useHistory} from "react-router-dom";
 
 
 const Assignment = (props) => {
+    const history = useHistory();
+    const claseInfo = props.location.state
+    if(props.location.state === undefined)
+    {
+        history.push('/login');
+        window.location.reload();
+    }
     const classes = useStyles();
-  
     return (
-
         <div>
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
@@ -38,7 +43,7 @@ const Assignment = (props) => {
                         <Card className={classes.root} variant="outlined">
                             <CardContent>
                                 <Typography variant="h5" component="h2">
-                                Matematicas 1
+                                {claseInfo.name}
                                 </Typography>
                                 <Typography className={classes.pos} color="textSecondary">
                                 Profesor Enrique Listas x

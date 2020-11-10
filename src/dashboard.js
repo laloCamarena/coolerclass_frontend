@@ -55,6 +55,7 @@ const Dashboard = (props) => {
     )
     if (error) {
         history.push('/login');
+        window.location.reload();
     }
     return (
         <div>
@@ -70,7 +71,11 @@ const Dashboard = (props) => {
                     {data.map((clase) =>
                         <Col>
                         <Card className={classes.root}>
-                            <CardActionArea>
+                            <CardActionArea onClick={event => {
+                                                history.push({
+                                                    pathname: '/assignment/'+clase.id,
+                                                    state: clase });
+                                                window.location.reload();}}>
                                 <CardMedia
                                 component="img"
                                 height="140"
@@ -85,8 +90,6 @@ const Dashboard = (props) => {
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
-                            <CardActions className={classes.root}>
-                            </CardActions>
                         </Card>
                     </Col>
                     )}
