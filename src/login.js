@@ -9,13 +9,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Logo from './Logo.png'
 const Login = () => {
     const history = useHistory();
+    const userData = JSON.parse(localStorage.getItem('userData'))
     const [user,setUser] = useState("")
     const initialLoginData = Object.freeze({
         email: "",
         password: "",
     });
     const [loginData, updateLoginData] = useState(initialLoginData);
-
+    if(userData !== null)
+    {
+        history.push({
+            pathname: '/dashboard',
+            state: userData
+        });
+    }
     const handleChange = (e) => {
         setUser("")
         console.log(e.target.value);
@@ -24,10 +31,10 @@ const Login = () => {
             [e.target.name]: e.target.value.trim()
         });
     };
-
     const onSuccess = ({data}) => {
        if(data !== "")
        {
+        localStorage.setItem('userData',JSON.stringify(data))
         history.push({
             pathname: '/dashboard',
             state: data

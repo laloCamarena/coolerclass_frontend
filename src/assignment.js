@@ -15,26 +15,43 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 // local packages
 import LogoSmall from './LogoSmall.png';
-
 import {useHistory} from "react-router-dom";
 
-
 const Assignment = (props) => {
+    const classes = useStyles();
     const history = useHistory();
-    const claseInfo = props.location.state
-    if(props.location.state === undefined)
+    const userClasses = JSON.parse(localStorage.getItem('userClasses'));
+    const idClase = getLink()
+    var filterData = userClasses.filter(item => item.id.toString().includes(idClase));
+    var claseInfo = props.location.state
+
+    function getLink()
     {
+        return window.location.href.split("/",5)[4]
+    }
+    function loggout()
+    {
+        localStorage.clear()
         history.push('/login');
         window.location.reload();
     }
-    const classes = useStyles();
+
+    if(props.location.state === undefined && filterData.length !== 0)
+    {
+        claseInfo=filterData[0]
+    }
+    else if (props.location.state === undefined && filterData.length === 0){
+        history.push('/dashboard');
+        window.location.reload();
+    }
+    
     return (
         <div>
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                <Nav.Link href="\login">Logout</Nav.Link>
+                <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
                 </Navbar.Collapse>
             </Navbar>
             <Container>
@@ -49,9 +66,9 @@ const Assignment = (props) => {
                                 Profesor Enrique Listas x
                                 </Typography>
                                 <Typography variant="body2" component="p">
-                                well meaning and kindly.
+                                Hora clase: {claseInfo.startTime} - {claseInfo.endTime}<br/>
+                                Dias: {claseInfo.days}
                                 <br />
-                                {'"a benevolent smile"'}
                                 </Typography>
                             </CardContent>
                         </Card>
