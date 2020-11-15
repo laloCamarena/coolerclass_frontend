@@ -98,13 +98,20 @@ const Assignment = (props) => {
                         <Card className={classes.root} variant="outlined">
                             <CardContent >
                                  <Form>
-                                    <Form.Group controlId="formEmail">
-                                        <Form.Control type="text" name="email" placeholder="Titulo de la publicación"/>
+                                    <Form.Group controlId="formTitle">
+                                        <Form.Control type="text" name="titulo" id="ftitle" placeholder="Titulo de la publicación"/>
                                     </Form.Group>
-                                    <Form.Group controlId="formPassword">
-                                        <Form.Control as="textarea" rows={3} type="text" name="password" placeholder="Mensaje"  />
+                                    <Form.Group controlId="formComment">
+                                        <Form.Control as="textarea" rows={3} type="text" name="comentario" id="fcomentario" placeholder="Mensaje"  />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.File label="Archivo" name="archivo" id="farchivo"/>
                                     </Form.Group>
                                     <CardActions>
+                                    {/* -----------------------------------------------------
+                                        Acá falta que le agregues la función para postearlo 
+                                        y regresas el showForm a false.
+                                    -----------------------------------------------------   */}
                                     <Button  onClick={() => setShowForm(false)} size="small">Publicar</Button>
                                 </CardActions>
                                 </Form> 
