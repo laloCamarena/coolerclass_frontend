@@ -26,7 +26,7 @@ const WatchStream = () => {
         });
     }, []);
 
-    if(img == asd)
+    if(img === asd)
     return (
         <div>
             <Navbar bg="dark" variant="dark">

@@ -13,18 +13,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import useAxios from 'axios-hooks'
 // local packages
 import LogoSmall from './LogoSmall.png';
 import {useHistory} from "react-router-dom";
 
 const Assignment = (props) => {
-    const classes = useStyles();
-    const history = useHistory();
-    const userClasses = JSON.parse(localStorage.getItem('userClasses'));
-    const idClase = getLink()
-    var filterData = userClasses.filter(item => item.id.toString().includes(idClase));
-    var claseInfo = props.location.state
-
     function getLink()
     {
         return window.location.href.split("/",5)[4]
@@ -35,7 +29,16 @@ const Assignment = (props) => {
         history.push('/login');
         window.location.reload();
     }
-
+    const classes = useStyles();
+    const history = useHistory();
+    const userClasses = JSON.parse(localStorage.getItem('userClasses'));
+    const idClase = getLink()
+    var filterData = userClasses.filter(item => item.id.toString().includes(idClase));
+    var claseInfo = props.location.state
+    const [{ data, loading, error }, refetch] = useAxios(
+        'http://127.0.0.1:5000//class/'+idClase+'/post'
+    )
+    console.log(data)
     if(props.location.state === undefined && filterData.length !== 0)
     {
         claseInfo=filterData[0]
@@ -44,7 +47,21 @@ const Assignment = (props) => {
         history.push('/dashboard');
         window.location.reload();
     }
-    
+    if (loading) return(
+        <div>
+            <Navbar bg="dark" variant="dark">
+                <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                <Navbar.Toggle />
+                <Navbar.Collapse className="justify-content-end">
+                <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
+                </Navbar.Collapse>
+            </Navbar>
+        </div>
+    )
+    if (error) {
+        history.push('/login');
+        window.location.reload();
+    }
     return (
         <div>
             <Navbar bg="dark" variant="dark">
@@ -76,42 +93,21 @@ const Assignment = (props) => {
                 </Row>
                 <Row>
                     <Col xs={12} md={8}>
-                        <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
+                    {data.map((post) =>
+                            <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
                             <CardContent>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                Post 1
-                                </Typography>
                                 <Typography className={classes.pos} color="textSecondary">
-                                Tarea
+                                {post.name}
                                 </Typography>
                                 <Typography variant="body2" component="p">
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
-                                At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, 
-                                consetetur sadipscing elitr
+                                {post.description}
                                 </Typography>
                             </CardContent>
                             <CardActions>
-                                <Button size="small">Subir tarea</Button>
+                                <Button size="small">Ver Post</Button>
                             </CardActions>
                         </Card>
-                        <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
-                            <CardContent>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                Post 2
-                                </Typography>
-                                <Typography className={classes.pos} color="textSecondary">
-                                Archivo
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
-                                At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, 
-                                consetetur sadipscing elitr
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small">Descargar archivo</Button>
-                            </CardActions>
-                        </Card>
+                        )}
                     </Col>
                     <Col xs={6} md={4}>
                         <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
