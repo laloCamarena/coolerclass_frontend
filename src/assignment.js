@@ -1,5 +1,5 @@
 // npm packages
-import React from 'react';
+import React, {useState} from 'react';
 //ReactBS
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import useAxios from 'axios-hooks'
+import Form from 'react-bootstrap/Form';
 // local packages
 import LogoSmall from './LogoSmall.png';
 import {useHistory} from "react-router-dom";
@@ -29,6 +30,7 @@ const Assignment = (props) => {
         history.push('/login');
         window.location.reload();
     }
+    const [showForm,setShowForm] =useState(false);
     const classes = useStyles();
     const history = useHistory();
     const userClasses = JSON.parse(localStorage.getItem('userClasses'));
@@ -38,7 +40,6 @@ const Assignment = (props) => {
     const [{ data, loading, error }, refetch] = useAxios(
         'http://127.0.0.1:5000//class/'+idClase+'/post'
     )
-    console.log(data)
     if(props.location.state === undefined && filterData.length !== 0)
     {
         claseInfo=filterData[0]
@@ -93,20 +94,44 @@ const Assignment = (props) => {
                 </Row>
                 <Row>
                     <Col xs={12} md={8}>
-                    {data.map((post) =>
-                            <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
-                            <CardContent>
-                                <Typography className={classes.pos} color="textSecondary">
-                                {post.name}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                {post.description}
-                                </Typography>
+                        {showForm ? 
+                        <Card className={classes.root} variant="outlined">
+                            <CardContent >
+                                 <Form>
+                                    <Form.Group controlId="formEmail">
+                                        <Form.Control type="text" name="email" placeholder="Titulo de la publicación"/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formPassword">
+                                        <Form.Control as="textarea" rows={3} type="text" name="password" placeholder="Mensaje"  />
+                                    </Form.Group>
+                                    <CardActions>
+                                    <Button  onClick={() => setShowForm(false)} size="small">Publicar</Button>
+                                </CardActions>
+                                </Form> 
                             </CardContent>
-                            <CardActions>
-                                <Button size="small">Ver Post</Button>
-                            </CardActions>
                         </Card>
+                        : 
+                        <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
+                            <CardContent >
+                                <CardActions>
+                                    <Button onClick={() => setShowForm(true)}  size="small">Publicar</Button>
+                                </CardActions>
+                            </CardContent>
+                        </Card>}
+                        {data.map((post) =>
+                            <Card key={post.id} className={classes.root} variant="outlined">
+                                <CardContent>
+                                    <Typography className={classes.pos} color="textSecondary">
+                                    {post.name}
+                                    </Typography>
+                                    <Typography variant="body2" component="p">
+                                    {post.description}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions >
+                                    <Button  size="small">Ver Post</Button>
+                                </CardActions>
+                            </Card>
                         )}
                     </Col>
                     <Col xs={6} md={4}>
@@ -116,6 +141,7 @@ const Assignment = (props) => {
                                 Stream activo
                                 </Typography>
                             </CardContent>
+
                             <CardActions>
                                 <Button size="small">Acceder</Button>
                             </CardActions>
@@ -144,4 +170,5 @@ const useStyles = makeStyles({
       marginBottom: 12,
     },
   });
+
 export default Assignment;
