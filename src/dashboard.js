@@ -4,6 +4,8 @@ import useAxios from 'axios-hooks'
 //ReactBS
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -15,6 +17,11 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Grid from '@material-ui/core/Grid';
 import {useHistory} from "react-router-dom";
+import Form from 'react-bootstrap/Form';
+
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+
 // local packages
 import a1 from './1.jpg';
 import a2 from './2.jpg';
@@ -22,6 +29,10 @@ import a3 from './3.jpg';
 import LogoSmall from './LogoSmall.png';
 
 const Dashboard = (props) => {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const history = useHistory();
     const userData = JSON.parse(localStorage.getItem('userData'))
     var userInfo = props.location.state;
@@ -66,11 +77,15 @@ const Dashboard = (props) => {
         localStorage.setItem('userClasses',JSON.stringify(data))
     }
     return (
+        <>
         <div>
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
+                <IconButton aria-label="delete">
+                    <AddCircleOutlineIcon onClick={handleShow}/>
+                </IconButton>
                 <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
                 </Navbar.Collapse>
             </Navbar>
@@ -104,9 +119,68 @@ const Dashboard = (props) => {
                     
                 </Row>
             </Grid>
-            
         </div>
-        
+        {userInfo.user_type === "student" ?
+        <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+        >
+            <Form>
+                <Modal.Header closeButton>
+                    <Modal.Title>Inscribirse a Clase</Modal.Title> 
+                </Modal.Header>
+                <Modal.Body>
+                
+                    <Form.Group controlId="formClassId">
+                        <Form.Control type="text" name="idClase" id="fidClase" placeholder="ID de la clase"/>
+                    </Form.Group>
+                    {/* -----------------------------------------------------
+                        Acá falta que le agregues la función para Unirse,
+                        no estoy seguro que esta estructura del Form en Modal funcione xd
+                    -----------------------------------------------------   */}
+                
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Cancelar
+                </Button>
+                <Button variant="primary">Inscribirse</Button>
+                </Modal.Footer>
+            </Form>
+        </Modal>
+        : 
+        <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+        >
+            <Form>
+                <Modal.Header closeButton>
+                    <Modal.Title>Crear clase</Modal.Title> 
+                </Modal.Header>
+                <Modal.Body>
+                
+                    <Form.Group controlId="formClassId">
+                        <Form.Control type="text" name="idClase" id="fidClase" placeholder="ID de la clase"/>
+                    </Form.Group>
+                    {/* -----------------------------------------------------
+                        Acá falta que le agregues la función para crear clase,
+                        Lo mismo que en la parte de arriba krnal
+                    -----------------------------------------------------   */}
+                
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Cancelar
+                </Button>
+                <Button variant="primary">Crear Clase</Button>
+                </Modal.Footer>
+            </Form>
+        </Modal> }
+    </>
     );
    
 };
