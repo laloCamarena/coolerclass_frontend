@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import Image from 'react-bootstrap/Image'
 import io from 'socket.io-client';
 import asd from './asd.png';
 
@@ -13,7 +14,9 @@ const WatchStream = () => {
     }, []);
 
     return (
-        <img  src={img} alt="something"/>
+        <div>
+            <Image src={img} fluid/>
+        </div>
     );
 }
 
