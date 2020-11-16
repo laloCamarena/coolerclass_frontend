@@ -25,26 +25,24 @@ const Login = () => {
     }
     const handleChange = (e) => {
         setUser("")
-        console.log(e.target.value);
         updateLoginData({
             ...loginData,
             [e.target.name]: e.target.value.trim()
         });
     };
     const onSuccess = ({data}) => {
-       if(data !== "")
-       {
-        localStorage.setItem('userData',JSON.stringify(data))
-        history.push({
-            pathname: '/dashboard',
-            state: data
-        });
-       }
-       else
-       {
-           setUser("Usuario inexistente o incorrecto")
-       }
-        
+        if(data !== "")
+        {
+            localStorage.setItem('userData',JSON.stringify(data))
+            history.push({
+                pathname: '/dashboard',
+                state: data
+            });
+        }
+        else
+        {
+            setUser("Usuario inexistente o incorrecto")
+        }
     }
 
     const handleSubmit = async (e) => {

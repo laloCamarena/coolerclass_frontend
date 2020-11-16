@@ -15,7 +15,9 @@ const Register = () => {
     const history = useHistory();
     const initialFormData = Object.freeze({
         email: "",
-        name: "",
+        firstName: "",
+        lastName: "",
+        userType: "student",
         password: "",
         confirmPassword: "",
     });
@@ -39,23 +41,29 @@ const Register = () => {
 
     return (
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
-        <Card border='secondary' style={{ width: '30rem',height:'35rem'}} className="text-center">
+        <Card border='secondary' style={{ width: '30rem',height:'40rem'}} className="text-center">
         <Card.Header><a href="/"><img alt="Logo" src= {Logo} width="30%"/></a></Card.Header>
         <Card.Body>
             <br/>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
-                        <Form.Label>Full Name</Form.Label>
-                        <Form.Control name="name" onChange = {handleChange} placeholder="Name"></Form.Control>
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control name="firstName" onChange = {handleChange} placeholder="First Name"></Form.Control>
+                    </Col>
+                    <Col>
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control name="lastName" onChange = {handleChange} placeholder="Last Name"></Form.Control>
                     </Col>
                 </Row>
+                <br />
                 <Row>
                     <Col>
                         <Form.Label>Email</Form.Label>
                         <Form.Control name="email" type="email" onChange = {handleChange} placeholder="email@example.com"></Form.Control>
                     </Col>
                 </Row>
+                <br />
                 <Row>
                     <Col>
                         <Form.Label>Password</Form.Label>
@@ -64,6 +72,16 @@ const Register = () => {
                     <Col>
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control name="confirmPassword" onChange = {handleChange} type="password" placeholder="Confirm"></Form.Control>
+                    </Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col>
+                        <Form.Label>User Type</Form.Label>
+                        <Form.Control as="select" custom onChange={handleChange} name="userType">
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                        </Form.Control>
                     </Col>
                 </Row>
                 <Card.Link style={{margin:"80px"}} href="/login">Login</Card.Link>

@@ -30,7 +30,7 @@ const Assignment = (props) => {
         history.push('/login');
         window.location.reload();
     }
-    const [showForm,setShowForm] =useState(false);
+    const [showForm,setShowForm] = useState(false);
     const classes = useStyles();
     const history = useHistory();
     const userClasses = JSON.parse(localStorage.getItem('userClasses'));
@@ -81,7 +81,7 @@ const Assignment = (props) => {
                                 {claseInfo.name}
                                 </Typography>
                                 <Typography className={classes.pos} color="textSecondary">
-                                Profesor Enrique Listas x
+                                    {claseInfo.teacher}
                                 </Typography>
                                 <Typography variant="body2" component="p">
                                 Hora clase: {claseInfo.startTime} - {claseInfo.endTime}<br/>

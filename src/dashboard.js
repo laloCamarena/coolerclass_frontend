@@ -46,7 +46,7 @@ const Dashboard = (props) => {
     }
     const imgs = [a1,a2,a3];
     
-    const [userID,setUserID] =useState(userInfo.id);
+    const [userID, setUserID] = useState(userInfo.id);
     const classes = useStyles();
     const [{ data, loading, error }, refetch] = useAxios(
         'http://127.0.0.1:5000/user/'+userID+'/classes'
@@ -74,7 +74,7 @@ const Dashboard = (props) => {
     }
     if(!loading)
     {
-        localStorage.setItem('userClasses',JSON.stringify(data))
+        localStorage.setItem('userClasses', JSON.stringify(data))
     }
     return (
         <>
@@ -109,14 +109,13 @@ const Dashboard = (props) => {
                                         {clase.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Arturo Emanuel Quezada Ruvalcaba
+                                            {clase.teacher}
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                             </Card>
                         </Col>
                     )}
-                    
                 </Row>
             </Grid>
         </div>
