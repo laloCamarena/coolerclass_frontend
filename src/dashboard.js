@@ -60,7 +60,7 @@ const Dashboard = (props) => {
     if (loading) return(
         <div>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                <Navbar.Brand href="/dashboard"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                 <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
@@ -80,11 +80,11 @@ const Dashboard = (props) => {
         <>
         <div>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                <Navbar.Brand href="/dashboard"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                <IconButton aria-label="delete">
-                    <AddCircleOutlineIcon onClick={handleShow}/>
+                <IconButton onClick={handleShow} aria-label="delete">
+                    <AddCircleOutlineIcon />
                 </IconButton>
                 <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
                 </Navbar.Collapse>
@@ -97,7 +97,8 @@ const Dashboard = (props) => {
                                 <CardActionArea onClick={event => {
                                                     history.push({
                                                         pathname: '/assignment/'+clase.id,
-                                                        state: clase });
+                                                        state: clase,
+                                                        userInfo: userInfo });
                                                     window.location.reload();}}>
                                     <CardMedia
                                     component="img"
@@ -128,11 +129,11 @@ const Dashboard = (props) => {
         >
             <Form>
                 <Modal.Header closeButton>
-                    <Modal.Title>Inscribirse a Clase</Modal.Title> 
+                    <Modal.Title>Join Assignment</Modal.Title> 
                 </Modal.Header>
                 <Modal.Body>
                 
-                    <Form.Group controlId="formClassId">
+                    <Form.Group>
                         <Form.Control type="text" name="idClase" id="fidClase" placeholder="ID de la clase"/>
                     </Form.Group>
                     {/* -----------------------------------------------------
@@ -143,9 +144,9 @@ const Dashboard = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
-                    Cancelar
+                    Cancel
                 </Button>
-                <Button variant="primary">Inscribirse</Button>
+                <Button variant="primary">Join</Button>
                 </Modal.Footer>
             </Form>
         </Modal>
@@ -158,11 +159,11 @@ const Dashboard = (props) => {
         >
             <Form>
                 <Modal.Header closeButton>
-                    <Modal.Title>Crear clase</Modal.Title> 
+                    <Modal.Title>Create Assignment</Modal.Title> 
                 </Modal.Header>
                 <Modal.Body>
                 
-                    <Form.Group controlId="formClassId">
+                    <Form.Group>
                         <Form.Control type="text" name="idClase" id="fidClase" placeholder="ID de la clase"/>
                     </Form.Group>
                     {/* -----------------------------------------------------
@@ -173,9 +174,9 @@ const Dashboard = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
-                    Cancelar
+                    Cancel
                 </Button>
-                <Button variant="primary">Crear Clase</Button>
+                <Button variant="primary">Create</Button>
                 </Modal.Footer>
             </Form>
         </Modal> }

@@ -22,7 +22,7 @@ import {useHistory} from "react-router-dom";
 const Assignment = (props) => {
     function getLink()
     {
-        return window.location.href.split("/",5)[4]
+        return props.match.params.id
     }
     function loggout()
     {
@@ -30,15 +30,25 @@ const Assignment = (props) => {
         history.push('/login');
         window.location.reload();
     }
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    var userInfo = props.location.userData;
+    const history = useHistory();
+    if(props.location.state === undefined && userData === null)
+    {
+        history.push('/login');
+        window.location.reload();
+    } else
+    {
+        userInfo = userData
+    }
     const [showForm,setShowForm] = useState(false);
     const classes = useStyles();
-    const history = useHistory();
     const userClasses = JSON.parse(localStorage.getItem('userClasses'));
     const idClase = getLink()
     var filterData = userClasses.filter(item => item.id.toString().includes(idClase));
     var claseInfo = props.location.state
     const [{ data, loading, error }, refetch] = useAxios(
-        'http://127.0.0.1:5000//class/'+idClase+'/post'
+        'http://127.0.0.1:5000/class/'+idClase+'/post'
     )
     if(props.location.state === undefined && filterData.length !== 0)
     {
@@ -51,7 +61,7 @@ const Assignment = (props) => {
     if (loading) return(
         <div>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                <Navbar.Brand href="/dashboard"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                 <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
@@ -63,10 +73,14 @@ const Assignment = (props) => {
         history.push('/login');
         window.location.reload();
     }
+    if(!loading)
+    {
+        localStorage.setItem('class'+idClase+'Posts', JSON.stringify(data))
+    }
     return (
         <div>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
+                <Navbar.Brand href="/dashboard"><img src ={LogoSmall} alt ="CoolerClass" width = "50%"/></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                 <Nav.Link onClick={() => loggout()}>Logout</Nav.Link>
@@ -94,37 +108,37 @@ const Assignment = (props) => {
                 </Row>
                 <Row>
                     <Col xs={12} md={8}>
-                        {showForm ? 
-                        <Card className={classes.root} variant="outlined">
-                            <CardContent >
-                                 <Form>
-                                    <Form.Group controlId="formTitle">
-                                        <Form.Control type="text" name="titulo" id="ftitle" placeholder="Titulo de la publicación"/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formComment">
-                                        <Form.Control as="textarea" rows={3} type="text" name="comentario" id="fcomentario" placeholder="Mensaje"  />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Form.File label="Archivo" name="archivo" id="farchivo"/>
-                                    </Form.Group>
-                                    <CardActions>
-                                    {/* -----------------------------------------------------
-                                        Acá falta que le agregues la función para postearlo 
-                                        y regresas el showForm a false.
-                                    -----------------------------------------------------   */}
-                                    <Button  onClick={() => setShowForm(false)} size="small">Publicar</Button>
-                                </CardActions>
-                                </Form> 
-                            </CardContent>
-                        </Card>
-                        : 
-                        <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
-                            <CardContent >
-                                <CardActions>
-                                    <Button onClick={() => setShowForm(true)}  size="small">Publicar</Button>
-                                </CardActions>
-                            </CardContent>
-                        </Card>}
+                        {userInfo.user_type !== "student" ? [
+                            (showForm ? 
+                                <Card className={classes.root} variant="outlined">
+                                    <CardContent >
+                                         <Form>
+                                            <Form.Group controlId="formTitle">
+                                                <Form.Control type="text" name="titulo" id="ftitle" placeholder="Titulo de la publicación"/>
+                                            </Form.Group>
+                                            <Form.Group controlId="formComment">
+                                                <Form.Control as="textarea" rows={3} type="text" name="comentario" id="fcomentario" placeholder="Mensaje"  />
+                                            </Form.Group>
+                                            <CardActions>
+                                            {/* -----------------------------------------------------
+                                                Acá falta que le agregues la función para postearlo 
+                                                y regresas el showForm a false.
+                                            -----------------------------------------------------   */}
+                                            <Button  onClick={() => setShowForm(false)} size="small">Publicar</Button>
+                                        </CardActions>
+                                        </Form> 
+                                    </CardContent>
+                                </Card>
+                                : 
+                                <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
+                                    <CardContent >
+                                        <CardActions>
+                                            <Button onClick={() => setShowForm(true)}  size="small">Publicar</Button>
+                                        </CardActions>
+                                    </CardContent>
+                                </Card>)
+                        ] : null}
+                        
                         {data.map((post) =>
                             <Card key={post.id} className={classes.root} variant="outlined">
                                 <CardContent>
@@ -136,7 +150,13 @@ const Assignment = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions >
-                                    <Button  size="small">Ver Post</Button>
+                                    <Button onClick={event => {
+                                                    history.push({
+                                                        pathname: '/'+claseInfo.id+'/post/'+post.id,
+                                                        state: post,
+                                                        userInfo: userInfo });
+                                                    window.location.reload();}} size="small">
+                                            Ver Post</Button>
                                 </CardActions>
                             </Card>
                         )}
@@ -145,12 +165,12 @@ const Assignment = (props) => {
                         <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
                             <CardContent>
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                Stream activo
+                                Active Stream
                                 </Typography>
                             </CardContent>
 
                             <CardActions>
-                                <Button size="small">Acceder</Button>
+                                <Button size="small">Enter</Button>
                             </CardActions>
                         </Card>
                     </Col>
