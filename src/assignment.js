@@ -13,7 +13,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import useAxios from 'axios-hooks'
+import axios from 'axios';
+import useAxios from 'axios-hooks';
 import Form from 'react-bootstrap/Form';
 // local packages
 import LogoSmall from './LogoSmall.png';
@@ -30,9 +31,36 @@ const Assignment = (props) => {
         history.push('/login');
         window.location.reload();
     }
+
     const userData = JSON.parse(localStorage.getItem('userData'))
     var userInfo = props.location.userData;
+    const initialPostData = Object.freeze({
+        name: '',
+        description: '',
+        informative: true
+    });
+    const [postData, setPostData] = useState(initialPostData);
     const history = useHistory();
+
+    const handleChange = (e) => {
+        const value = e.target.type === 'checkbox'
+            ? !e.target.checked
+            : e.target.value.trim();
+        setPostData({
+            ...postData,
+            [e.target.name]: value
+        });
+        console.log(value);
+    }
+
+    const createPost = (e) => {
+        e.preventDefault();
+        axios.post(`http://localhost:5000/class/${idClase}/post`,
+        { ...postData }
+        );
+        setShowForm(!showForm);
+    }
+
     if(props.location.state === undefined && userData === null)
     {
         history.push('/login');
@@ -41,7 +69,7 @@ const Assignment = (props) => {
     {
         userInfo = userData
     }
-    const [showForm,setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(false);
     const classes = useStyles();
     const userClasses = JSON.parse(localStorage.getItem('userClasses'));
     const idClase = getLink()
@@ -112,19 +140,23 @@ const Assignment = (props) => {
                             (showForm ? 
                                 <Card className={classes.root} variant="outlined">
                                     <CardContent >
-                                         <Form>
+                                        <Form>
                                             <Form.Group controlId="formTitle">
-                                                <Form.Control type="text" name="titulo" id="ftitle" placeholder="Titulo de la publicación"/>
+                                                <Form.Control type="text" name="name" onChange={handleChange} placeholder="Titulo de la publicación"/>
                                             </Form.Group>
                                             <Form.Group controlId="formComment">
-                                                <Form.Control as="textarea" rows={3} type="text" name="comentario" id="fcomentario" placeholder="Mensaje"  />
+                                                <Form.Control as="textarea" rows={3} type="text" onChange={handleChange} name="description" placeholder="Mensaje"  />
+                                            </Form.Group>
+                                            <Form.Group controlId="formCheckbox">
+                                                <Form.Check type="checkbox" label="Es tarea" name="informative" onChange={handleChange} />
                                             </Form.Group>
                                             <CardActions>
                                             {/* -----------------------------------------------------
                                                 Acá falta que le agregues la función para postearlo 
                                                 y regresas el showForm a false.
                                             -----------------------------------------------------   */}
-                                            <Button  onClick={() => setShowForm(false)} size="small">Publicar</Button>
+                                            <Button  onClick={createPost} size="small">Publicar</Button>
+                                            <Button  onClick={() => setShowForm(!showForm)} size="small">Cancelar</Button>
                                         </CardActions>
                                         </Form> 
                                     </CardContent>
@@ -133,7 +165,7 @@ const Assignment = (props) => {
                                 <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
                                     <CardContent >
                                         <CardActions>
-                                            <Button onClick={() => setShowForm(true)}  size="small">Publicar</Button>
+                                            <Button onClick={() => setShowForm(!showForm)}  size="small">Publicar</Button>
                                         </CardActions>
                                     </CardContent>
                                 </Card>)
@@ -177,25 +209,23 @@ const Assignment = (props) => {
                 </Row>
             </Container>
         </div>
-        
     );
-   
 };
 const useStyles = makeStyles({
     root: {
-      minWidth: 275,
+        minWidth: 275,
     },
     bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
     },
     title: {
-      fontSize: 14,
+        fontSize: 14,
     },
     pos: {
-      marginBottom: 12,
+        marginBottom: 12,
     },
-  });
+});
 
 export default Assignment;
