@@ -1,24 +1,27 @@
 // npm packages
 import React, {useState} from 'react';
 //ReactBS
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import DescriptionIcon from '@material-ui/icons/Description';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Navbar from 'react-bootstrap/Navbar';
+import Card from '@material-ui/core/Card';
+import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import useAxios from 'axios-hooks'
-import Form from 'react-bootstrap/Form';
-import ListGroup from 'react-bootstrap/ListGroup'
 // local packages
-import LogoSmall from './LogoSmall.png';
-import {useHistory} from "react-router-dom";
 import { CardActions } from '@material-ui/core';
+import {useHistory} from "react-router-dom";
+import LogoSmall from './LogoSmall.png';
 
 const Post = (props) => {
     function getLink()
@@ -51,7 +54,6 @@ const Post = (props) => {
     const [{ data, loading, error }, refetch] = useAxios(
         'http://127.0.0.1:5000/post/'+getLink()+'/file/'+userInfo.id
     )
-    console.log(data)
     const userClasses = JSON.parse(localStorage.getItem('userClasses'));
     var filterData = userClasses.filter(item => item.id.toString().includes(getClass()));
     const classPosts = JSON.parse(localStorage.getItem('class'+filterData[0].id+'Posts'));
@@ -85,17 +87,15 @@ const Post = (props) => {
                 <Row>
                     <Col>
                         <Card className={classes.root} variant="outlined">
-                            <CardContent>
-                                <Typography variant="h5" component="h2">
-                                {postInfo.name}
-                                </Typography>
-                                <Typography className={classes.pos} color="textSecondary">
-                                {filterData[0].name}
-                                </Typography>
-                            </CardContent>
+                            <CardHeader
+                                title={postInfo.name}
+                                subheader={filterData[0].name}
+                                className={classes.headerMain}
+                            />
                         </Card>
                     </Col>
                 </Row>
+                <br/>
                 {!postInfo.informative ?[
                     (userInfo.user_type!== "student" ? 
                     <Row className="justify-content-center">
@@ -112,7 +112,7 @@ const Post = (props) => {
                     :
                     <Row >
                         <Col xs={8} md={8}>
-                            <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
+                            <Card style={{ display:'flex' }} className={classes.root} variant="outlined">
                                 <CardContent>
                                     <Typography className={classes.title} color="textSecondary" gutterBottom>
                                     {postInfo.description}
@@ -120,15 +120,19 @@ const Post = (props) => {
                                 </CardContent>
                             </Card>
                         </Col>
-                        <Col xs={2} md={2}>
+                        <Col xs={4} md={4}>
                             <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
-                                <CardContent >
+                                <CardContent  >
                                     {data !== undefined ? 
                                     <>
+                                    <IconButton style={{ paddingLeft:'38%' }} aria-label="file">
+                                        <DescriptionIcon className={classes.largeIcon}/>
+                                        
+                                    </IconButton>
                                     <a  href={data[0].attachment}><p style={{ display:'flex', justifyContent:'center' }}>{data[0].name}</p></a> 
                                     <Form>
                                         <Form.Group>
-                                            <Form.File id="exampleFormControlFile1" label="Change" />
+                                            <Form.File id="exampleFormControlFile1" label="Modify File" />
                                         </Form.Group>
                                         <CardActions className={classes.r}>
                                             <Button size="small">Upload</Button>
@@ -177,6 +181,14 @@ const Post = (props) => {
    
 };
 const useStyles = makeStyles({
+     headerMain: {
+        background: '#BBC7F2',
+        textAlign: 'center'
+    },
+    largeIcon: {
+        width: 60,
+        height: 60,
+    },    
     r: {
         justifyContent: 'center',
     },

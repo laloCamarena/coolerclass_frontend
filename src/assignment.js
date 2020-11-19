@@ -9,12 +9,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import axios from 'axios';
 import useAxios from 'axios-hooks';
+import IconButton from '@material-ui/core/IconButton';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import Form from 'react-bootstrap/Form';
 // local packages
 import LogoSmall from './LogoSmall.png';
@@ -98,8 +101,9 @@ const Assignment = (props) => {
         </div>
     )
     if (error) {
-        history.push('/login');
-        window.location.reload();
+        //history.push('/login');
+        //window.location.reload();
+        console.log(error)
     }
     if(!loading)
     {
@@ -118,16 +122,15 @@ const Assignment = (props) => {
                 <Row>
                     <Col>
                         <Card className={classes.root} variant="outlined">
+                            <CardHeader
+                                title={claseInfo.name}
+                                subheader={claseInfo.teacher}
+                                className={classes.headerMain}
+                            />
                             <CardContent>
-                                <Typography variant="h5" component="h2">
-                                {claseInfo.name}
-                                </Typography>
-                                <Typography className={classes.pos} color="textSecondary">
-                                    {claseInfo.teacher}
-                                </Typography>
                                 <Typography variant="body2" component="p">
-                                Hora clase: {claseInfo.startTime} - {claseInfo.endTime}<br/>
-                                Dias: {claseInfo.days}
+                                Class Hours: {claseInfo.startTime} - {claseInfo.endTime}<br/>
+                                Days: {claseInfo.days}
                                 <br />
                                 </Typography>
                             </CardContent>
@@ -155,8 +158,8 @@ const Assignment = (props) => {
                                                 Acá falta que le agregues la función para postearlo 
                                                 y regresas el showForm a false.
                                             -----------------------------------------------------   */}
-                                            <Button  onClick={createPost} size="small">Publicar</Button>
-                                            <Button  onClick={() => setShowForm(!showForm)} size="small">Cancelar</Button>
+                                            <Button  onClick={createPost} size="small">Post</Button>
+                                            <Button  onClick={() => setShowForm(!showForm)} size="small">Cancel</Button>
                                         </CardActions>
                                         </Form> 
                                     </CardContent>
@@ -165,21 +168,29 @@ const Assignment = (props) => {
                                 <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
                                     <CardContent >
                                         <CardActions>
-                                            <Button onClick={() => setShowForm(!showForm)}  size="small">Publicar</Button>
+                                            <Button onClick={() => setShowForm(!showForm)}  size="small">Post</Button>
                                         </CardActions>
                                     </CardContent>
                                 </Card>)
                         ] : null}
                         
                         {data.map((post) =>
+                        <>
                             <Card key={post.id} className={classes.root} variant="outlined">
+                                 <CardHeader
+                                    avatar={
+                                    <IconButton aria-label="delete">
+                                        <AssignmentIcon />
+                                    </IconButton>
+                                }
+                                title={post.name}
+                                className={classes.headerAssign}
+                                />
                                 <CardContent>
-                                    <Typography className={classes.pos} color="textSecondary">
-                                    {post.name}
-                                    </Typography>
-                                    <Typography variant="body2" component="p">
-                                    {post.description}
-                                    </Typography>
+                                <Typography variant="body2" component="p">
+                                {post.description}
+                                <br />
+                                </Typography>
                                 </CardContent>
                                 <CardActions >
                                     <Button onClick={event => {
@@ -191,6 +202,8 @@ const Assignment = (props) => {
                                             Ver Post</Button>
                                 </CardActions>
                             </Card>
+                            <br/>
+                        </>
                         )}
                     </Col>
                     <Col xs={6} md={4}>
@@ -212,6 +225,14 @@ const Assignment = (props) => {
     );
 };
 const useStyles = makeStyles({
+    headerMain: {
+        background: '#6a52eb',
+        textAlign: 'center'
+    },
+    headerAssign: {
+        background: '#8DA4F7',
+        textAlign: 'center'
+    },
     root: {
         minWidth: 275,
     },
