@@ -1,6 +1,7 @@
 // npm packages
 import React, {useState} from 'react';
 import useAxios from 'axios-hooks'
+import axios from 'axios';
 //ReactBS
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -32,6 +33,19 @@ const Dashboard = (props) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const initialJoinClassData = Object.freeze({
+        id: "",
+        password: "",
+    });
+    const [joinClassData, updateJoinClassData] = useState(initialJoinClassData);
+    const initialCreateClassData = Object.freeze({
+        name: "",
+        password: "",
+        startTime: "",
+        endTime: "",
+        days: "",
+    });
+    const [createClassData, updateCreateClassData] = useState(initialCreateClassData);
 
     const history = useHistory();
     const userData = JSON.parse(localStorage.getItem('userData'))
@@ -57,6 +71,37 @@ const Dashboard = (props) => {
         history.push('/login');
         window.location.reload();
     }
+
+    const handleJoinClass = (e) => {
+        updateJoinClassData({
+            ...joinClassData,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleCreateClass = (e) => {
+        updateCreateClassData({
+            ...createClassData,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const joinClass = async (e) => {
+        await axios.post(`http://localhost:5000/class/${userID}/enroll`, {
+            ...joinClassData
+        })
+        .catch(console.log);
+        handleClose();
+    }
+
+    const createClass = async (e) => {
+        await axios.post(`http://localhost:5000/class/${userID}/create`, {
+            ...createClassData
+        })
+        .catch(console.log);
+        handleClose();
+    }
+
     if (loading) return(
         <div>
             <Navbar bg="dark" variant="dark">
@@ -129,12 +174,13 @@ const Dashboard = (props) => {
         >
             <Form>
                 <Modal.Header closeButton>
-                    <Modal.Title>Join Assignment</Modal.Title> 
+                    <Modal.Title>Join Class</Modal.Title> 
                 </Modal.Header>
                 <Modal.Body>
                 
                     <Form.Group>
-                        <Form.Control type="text" name="idClase" id="fidClase" placeholder="ID de la clase"/>
+                        <Form.Control type="text" name="id" id="fidClase" placeholder="ID de la clase" onChange={handleJoinClass} /> <br/>
+                        <Form.Control type="password" name="password" id="fidClase" placeholder="Contraseña de la clase" onChange={handleJoinClass} />
                     </Form.Group>
                     {/* -----------------------------------------------------
                         Acá falta que le agregues la función para Unirse,
@@ -146,7 +192,7 @@ const Dashboard = (props) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="primary">Join</Button>
+                <Button variant="primary" onClick={joinClass}>Join</Button>
                 </Modal.Footer>
             </Form>
         </Modal>
@@ -159,12 +205,13 @@ const Dashboard = (props) => {
         >
             <Form>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create Assignment</Modal.Title> 
+                    <Modal.Title>Create Class</Modal.Title> 
                 </Modal.Header>
                 <Modal.Body>
                 
                     <Form.Group>
-                        <Form.Control type="text" name="idClase" id="fidClase" placeholder="ID de la clase"/>
+                        <Form.Control type="text" name="name" id="fidClase" placeholder="Nombre de la clase" onChange={handleCreateClass} /> <br/>
+                        <Form.Control type="password" name="password" id="fidClase" placeholder="Contraseña de la clase" onChange={handleCreateClass} />
                     </Form.Group>
                     {/* -----------------------------------------------------
                         Acá falta que le agregues la función para crear clase,
@@ -176,7 +223,7 @@ const Dashboard = (props) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="primary">Create</Button>
+                <Button variant="primary" onClick={createClass}>Create</Button>
                 </Modal.Footer>
             </Form>
         </Modal> }
