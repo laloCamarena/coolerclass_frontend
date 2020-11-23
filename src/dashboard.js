@@ -40,10 +40,11 @@ const Dashboard = (props) => {
     const [joinClassData, updateJoinClassData] = useState(initialJoinClassData);
     const initialCreateClassData = Object.freeze({
         name: "",
-        password: "",
         startTime: "",
         endTime: "",
         days: "",
+        password: "",
+        confirmPassword: "",
     });
     const [createClassData, updateCreateClassData] = useState(initialCreateClassData);
 
@@ -95,11 +96,15 @@ const Dashboard = (props) => {
     }
 
     const createClass = async (e) => {
-        await axios.post(`http://localhost:5000/class/${userID}/create`, {
-            ...createClassData
-        })
-        .catch(console.log);
-        handleClose();
+        if (createClassData.password === createClassData.confirmPassword) {
+            await axios.post(`http://localhost:5000/class/${userID}/create`, {
+                ...createClassData
+            })
+            .catch(console.log);
+            handleClose();
+        } else {
+            alert('Las contraseñas deben ser idénticas');
+        }
     }
 
     if (loading) return(
@@ -210,8 +215,12 @@ const Dashboard = (props) => {
                 <Modal.Body>
                 
                     <Form.Group>
-                        <Form.Control type="text" name="name" id="fidClase" placeholder="Nombre de la clase" onChange={handleCreateClass} /> <br/>
-                        <Form.Control type="password" name="password" id="fidClase" placeholder="Contraseña de la clase" onChange={handleCreateClass} />
+                        <Form.Control type="text" name="name" value={createClassData.name} placeholder="Nombre de la clase" onChange={handleCreateClass} /> <br/>
+                        <Form.Control type="text" name="startTime" value={createClassData.startTime} placeholder="12:00" onChange={handleCreateClass} /> <br/>
+                        <Form.Control type="text" name="endTime" value={createClassData.endTime} placeholder="14:00" onChange={handleCreateClass} /> <br/>
+                        <Form.Control type="text" name="days" value={createClassData.days} placeholder="Días en los que se imparte la clase" onChange={handleCreateClass} /> <br/>
+                        <Form.Control type="password" name="password" value={createClassData.password} placeholder="Contraseña de la clase" onChange={handleCreateClass} /> <br/>
+                        <Form.Control type="password" name="confirmPassword" value={createClassData.confirmPassword} placeholder="Confirmar Contraseña" onChange={handleCreateClass} /> <br/>
                     </Form.Group>
                     {/* -----------------------------------------------------
                         Acá falta que le agregues la función para crear clase,
