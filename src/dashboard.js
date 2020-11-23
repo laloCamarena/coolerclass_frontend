@@ -90,17 +90,22 @@ const Dashboard = (props) => {
     const joinClass = async (e) => {
         await axios.post(`http://localhost:5000/class/${userID}/enroll`, {
             ...joinClassData
-        })
-        .catch(console.log);
-        handleClose();
+        }).then(response => {
+            window.location.reload();
+          }).catch(error => {
+              console.log(error)
+          });
     }
 
     const createClass = async (e) => {
         if (createClassData.password === createClassData.confirmPassword) {
             await axios.post(`http://localhost:5000/class/${userID}/create`, {
                 ...createClassData
-            })
-            .catch(console.log);
+            }).then(response => {
+                window.location.reload();
+              }).catch(error => {
+                  console.log(error)
+              });
             handleClose();
         } else {
             alert('Las contraseñas deben ser idénticas');

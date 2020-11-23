@@ -24,6 +24,15 @@ import LogoSmall from './LogoSmall.png';
 import {useHistory} from "react-router-dom";
 
 const Assignment = (props) => {
+    const [showForm, setShowForm] = useState(false);
+    const classes = useStyles();
+    const userClasses = JSON.parse(localStorage.getItem('userClasses'));
+    const idClase = getLink()
+    var filterData = userClasses.filter(item => item.id.toString().includes(idClase));
+    var claseInfo = props.location.state
+    const [{ data, loading, error }, refetch] = useAxios(
+        'http://127.0.0.1:5000/class/'+idClase+'/post'
+    )
     function getLink()
     {
         return props.match.params.id
@@ -32,7 +41,7 @@ const Assignment = (props) => {
     {
         localStorage.clear()
         history.push('/login');
-        window.location.reload();
+        
     }
 
     const userData = JSON.parse(localStorage.getItem('userData'))
@@ -60,7 +69,11 @@ const Assignment = (props) => {
         e.preventDefault();
         axios.post(`http://localhost:5000/class/${idClase}/post`,
         { ...postData }
-        );
+        ).then(response => {
+            window.location.reload();
+          }).catch(error => {
+              console.log(error)
+          });
         setShowForm(!showForm);
     }
 
@@ -72,15 +85,7 @@ const Assignment = (props) => {
     {
         userInfo = userData
     }
-    const [showForm, setShowForm] = useState(false);
-    const classes = useStyles();
-    const userClasses = JSON.parse(localStorage.getItem('userClasses'));
-    const idClase = getLink()
-    var filterData = userClasses.filter(item => item.id.toString().includes(idClase));
-    var claseInfo = props.location.state
-    const [{ data, loading, error }, refetch] = useAxios(
-        'http://127.0.0.1:5000/class/'+idClase+'/post'
-    )
+    
     if(props.location.state === undefined && filterData.length !== 0)
     {
         claseInfo=filterData[0]
@@ -129,6 +134,7 @@ const Assignment = (props) => {
                             />
                             <CardContent>
                                 <Typography variant="body2" component="p">
+                                Class ID: {getLink()}<br/>
                                 Class Hours: {claseInfo.startTime} - {claseInfo.endTime}<br/>
                                 Days: {claseInfo.days}
                                 <br />
