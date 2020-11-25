@@ -18,6 +18,7 @@ import Nav from 'react-bootstrap/Nav';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import useAxios from 'axios-hooks'
+import axios from 'axios';
 // local packages
 import { CardActions } from '@material-ui/core';
 import {useHistory} from "react-router-dom";
@@ -41,6 +42,50 @@ const Post = (props) => {
     const userData = JSON.parse(localStorage.getItem('userData'))
     var userInfo = props.location.userData;
     const history = useHistory();
+    const fileObjectInitValues = Object.freeze({
+        name: "",
+        attachment: null,
+    })
+    const [fileInfo, setFileInfo] = useState(fileObjectInitValues);
+
+    const onFileChange = async (e) => {
+        const files = e.target.files;
+        if (files.length > 0) {
+            const fileToLoad = files[0]
+            const data = await convertBase64(fileToLoad);
+            setFileInfo({ name: fileToLoad.name });
+            // setFileInfo({ attachment: fileToLoad.file });
+            // console.log(data.toString());
+        }
+    }
+
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file)
+            fileReader.onload = () => {
+            resolve(fileReader.result);
+            }
+            fileReader.onerror = (error) => {
+                reject(error);
+            }
+        })
+        }
+
+    const uploadFile = async (e) => {
+        e.preventDefault()
+        await axios.post(`http://localhost:5000/post/${getLink()}/file/${userInfo.id}`, fileInfo)
+        .then(console.log)
+        .catch(console.log);
+    }
+
+    const downloadPDF = () => {
+        const downloadLink = document.createElement('a');
+
+        downloadLink.href = data[0].attachment;
+        downloadLink.download = data[0].name;
+        downloadLink.click();
+    }
     
     if(props.location.state === undefined && userData === null)
     {
@@ -127,21 +172,20 @@ const Post = (props) => {
                                     <>
                                     <IconButton style={{ paddingLeft:'38%' }} aria-label="file">
                                         <DescriptionIcon className={classes.largeIcon}/>
-                                        
                                     </IconButton>
-                                    <a  href={data[0].attachment}><p style={{ display:'flex', justifyContent:'center' }}>{data[0].name}</p></a> 
+                                    <Button size="small" onClick={downloadPDF} > {data[0].name} </Button>
                                     <Form>
                                         <Form.Group>
-                                            <Form.File id="exampleFormControlFile1" label="Modify File" />
+                                            <Form.File id="formControlFile1" name="file" onChange={onFileChange} label="Modify File" />
                                         </Form.Group>
                                         <CardActions className={classes.r}>
-                                            <Button size="small">Upload</Button>
+                                            <Button size="small" onClick={uploadFile} >Upload</Button>
                                         </CardActions>
                                     </Form>
                                     </>
                                     : <Form>
                                         <Form.Group>
-                                            <Form.File id="exampleFormControlFile1" label="Upload" />
+                                            <Form.File id="formControlFile1" label="Upload" />
                                         </Form.Group>
                                         <CardActions className={classes.r}>
                                             <Button size="small">Upload</Button>
