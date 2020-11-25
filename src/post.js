@@ -87,6 +87,12 @@ const Post = (props) => {
         downloadLink.click();
     }
     
+    const downloadPDFTeacher = (file) => {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = file.attatchment;
+        downloadLink.download = file.name;
+        downloadLink.click();
+    }
     if(props.location.state === undefined && userData === null)
     {
         history.push('/login');
@@ -212,7 +218,12 @@ const Post = (props) => {
                     <Col>
                     <ListGroup variant="flush">
                         {data.map((file) =>
-                            <ListGroup.Item key={file.name}>{file.name}<a href={file.attatchment}> {file.attatchment}</a></ListGroup.Item>
+                            <ListGroup.Item key={file.name}>
+                                <IconButton style={{ paddingLeft:'38%' }} aria-label="file">
+                                        <DescriptionIcon className={classes.largeIcon}/>
+                                </IconButton>
+                                <Button size="small" onClick={downloadPDFTeacher.bind(this, file)} > {file.name} </Button>
+                            </ListGroup.Item>
                         )}
                     </ListGroup>
                     </Col>
