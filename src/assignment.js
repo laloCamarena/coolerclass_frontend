@@ -212,19 +212,47 @@ const Assignment = (props) => {
                         </>
                         )}
                     </Col>
+                    {userInfo.user_type === "student" ?
+                    <Col xs={6} md={4}>
+                    <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
+                        <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            Class Stream
+                            </Typography>
+                        </CardContent>
+
+                        <CardActions>
+                            <Button onClick={event => {
+                                                    history.push({
+                                                        pathname: '/watchstream',
+                                                         });
+                                                    window.location.reload();}} size="small">
+                                            Ver Post</Button>
+                        </CardActions>
+                    </Card>
+                    </Col> : 
                     <Col xs={6} md={4}>
                         <Card style={{ display:'flex', justifyContent:'center' }} className={classes.root} variant="outlined">
                             <CardContent>
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                Active Stream
+                                Start Stream
                                 </Typography>
                             </CardContent>
 
                             <CardActions>
-                                <Button size="small">Enter</Button>
+                            <Button onClick={event => {
+                                                    history.push({
+                                                        pathname: '/stream', });
+                                                    window.location.reload();}} size="small">
+                                            Ver Post</Button>
                             </CardActions>
                         </Card>
-                    </Col>
+                    </Col> }
+
+
+
+
+                    
                 </Row>
             </Container>
         </div>
